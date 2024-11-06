@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(treasury)
 	name = "treasury"
 	wait = 1
 	priority = FIRE_PRIORITY_WATER_LEVEL
-	var/tax_value = 0.11
+	var/tax_value = 0.10
 	var/queens_tax = 0.15
 	var/treasury_value = 0
 	var/list/bank_accounts = list()
@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(treasury)
 
 /datum/controller/subsystem/treasury/Initialize()
 	treasury_value = rand(800,1500)
-	queens_tax = pick(0.09, 0.15, 0.21, 0.30)
+	queens_tax = rand(5, 35)/100
 
 	for(var/path in subtypesof(/datum/roguestock/bounty))
 		var/datum/D = new path
@@ -126,14 +126,12 @@ SUBSYSTEM_DEF(treasury)
 		if(X == name)
 			if(amt > 0)
 				bank_accounts[X] += amt  // Deposit the money into the player's account
-				treasury_value -= amt   // Deduct the given amount from the treasury
 			else
 				// Check if the amount to be fined exceeds the player's account balance
 				if(abs(amt) > bank_accounts[X])
 					send_ooc_note("<b>The Bank:</b> Error: Insufficient funds in the player's account to complete the fine.", name = name)
 					return FALSE  // Return early if the player has insufficient funds
 				bank_accounts[X] -= abs(amt)  // Deduct the fine amount from the player's account
-				treasury_value += abs(amt)  // Add the fined amount to the treasury
 			found_account = TRUE
 			break
 	if(!found_account)
