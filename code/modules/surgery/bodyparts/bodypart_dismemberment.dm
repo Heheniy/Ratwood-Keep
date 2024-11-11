@@ -56,15 +56,16 @@
 				if(C.real_name in GLOB.excommunicated_players)
 					stress2give = /datum/stressevent/viewsinpunish
 	if(stress2give)
-		for(var/mob/living/carbon/CA in hearers(world.view, C))
-			if(CA != C && !HAS_TRAIT(CA, TRAIT_BLIND) && !guillotine_execution)
-				if(stress2give == /datum/stressevent/viewdismember)
-					if(HAS_TRAIT(CA, TRAIT_STEELHEARTED))
-						continue
-					if(CA.gender == FEMALE)
-						CA.add_stress(/datum/stressevent/fviewdismember)
-						continue
-				CA.add_stress(stress2give)
+		if(!is_species(C, /datum/species/goblin) && !is_species(C, /datum/species/skeleton))
+			for(var/mob/living/carbon/CA in hearers(world.view, C))
+				if(CA != C && !HAS_TRAIT(CA, TRAIT_BLIND) && !guillotine_execution)
+					if(stress2give == /datum/stressevent/viewdismember)
+						if(HAS_TRAIT(CA, TRAIT_STEELHEARTED))
+							continue
+						if(CA.gender == FEMALE)
+							CA.add_stress(/datum/stressevent/fviewdismember)
+							continue
+					CA.add_stress(stress2give)
 	if(grabbedby)
 		QDEL_LIST(grabbedby)
 
