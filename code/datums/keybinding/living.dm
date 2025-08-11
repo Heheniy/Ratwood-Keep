@@ -289,3 +289,4 @@
 		M.pixelshift_layer = M.pixelshift_layer - 0.01
 		M.layer = 4 + M.pixelshift_layer
 	return TRUE
+	
